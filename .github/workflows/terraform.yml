@@ -44,12 +44,13 @@
 
 name: 'Terraform'
 
-on: workflow_dispatch
-  inputs:
-    region: 
-      description: 'Specify the AWS Region'
-      required: true
-      default: 'us-east-1'
+on: 
+  workflow_dispatch:
+    inputs:
+      region: 
+        description: 'Specify the AWS Region'
+        required: true
+        default: 'us-east-1'
 
 permissions:
   contents: read
