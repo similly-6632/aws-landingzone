@@ -369,17 +369,17 @@ variable "password" {
 # References of your environment
 variable "region" {
   description = "Provide the region to deploy the VPC in"
-  default     = "eu-west-1"
+  default     = "us-east-1"
 }
 
 variable "availability_zone1" {
   description = "Provide the first availability zone to create the subnets in"
-  default     = "eu-west-1a"
+  default     = "us-east-1a"
 }
 
 variable "availability_zone2" {
   description = "Provide the second availability zone to create the subnets in"
-  default     = "eu-west-1c"
+  default     = "us-east-1c"
 }
 
 # References to your Networks
