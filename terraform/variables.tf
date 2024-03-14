@@ -509,10 +509,10 @@ variable "ami" {
 
 variable "keypair" {
   description = "Provide a keypair for accessing the FortiGate instances"
-  default     = "<AWS SSH KEY>"
+  default     = "Fortinet"
 }
 
 variable "cidr_for_access" {
   description = "Provide a network CIDR for accessing the FortiGate instances"
-  default     = "0.0.0.0/0"
+  default     = "147.161.224.0/23"
 }
