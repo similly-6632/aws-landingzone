@@ -6,8 +6,8 @@
 ##############################################################################################################
 
 # Access and secret keys to your environment
-variable "access_key" {}
-variable "secret_key" {}
+# variable "access_key" {}
+# variable "secret_key" {}
 
 # Uncomment if using AWS SSO:
 # variable "token"      {}
