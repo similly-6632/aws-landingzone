@@ -167,12 +167,12 @@ resource "aws_security_group" "NSG-vpc-sec-ssh-icmp-https" {
 ##############################################################################################################
 # Create the IAM role/profile for the API Call
 resource "aws_iam_instance_profile" "APICall_profile" {
-  name = "APICall_profile"
+  name = "FG_APICall_profile"
   role = aws_iam_role.APICallrole.name
 }
 
 resource "aws_iam_role" "APICallrole" {
-  name = "APICall_role"
+  name = "FG_APICall_role"
 
   assume_role_policy = <<EOF
 {
@@ -192,7 +192,7 @@ EOF
 }
 
 resource "aws_iam_policy" "APICallpolicy" {
-  name        = "APICall_policy"
+  name        = "FG_APICall_policy"
   path        = "/"
   description = "Policies for the FGT APICall Role"
 
@@ -219,13 +219,31 @@ EOF
 }
 
 resource "aws_iam_policy_attachment" "APICall-attach" {
-  name       = "APICall-attachment"
+  name       = "FG-APICall-attachment"
   roles      = [aws_iam_role.APICallrole.name]
   policy_arn = aws_iam_policy.APICallpolicy.arn
 }
 
 
 # Create all the eni interfaces
+resource "aws_network_interface" "eni-fgt1-external" {
+  subnet_id         = aws_subnet.data_subnet1.id
+  security_groups   = [aws_security_group.NSG-vpc-sec-ssh-icmp-https.id]
+  source_dest_check = false
+  tags = {
+    Name = "${var.tag_name_prefix}-fgt1-eniexternal"
+  }
+}
+
+resource "aws_network_interface" "eni-fgt2-external" {
+  subnet_id         = aws_subnet.data_subnet2.id
+  security_groups   = [aws_security_group.NSG-vpc-sec-ssh-icmp-https.id]
+  source_dest_check = false
+  tags = {
+    Name = "${var.tag_name_prefix}-fgt2-eniexternal"
+  }
+}
+
 resource "aws_network_interface" "eni-fgt1-data" {
   subnet_id         = aws_subnet.data_subnet1.id
   security_groups   = [aws_security_group.NSG-vpc-sec-ssh-icmp-https.id]
@@ -304,7 +322,7 @@ resource "aws_eip" "eip-mgmt2" {
 resource "aws_eip" "eip-shared" {
   depends_on        = [aws_instance.fgt1]
   domain            = "vpc"
-  network_interface = aws_network_interface.eni-fgt1-data.id
+  network_interface = aws_network_interface.eni-fgt1-external.id
   tags = {
     Name = "${var.tag_name_prefix}-eip-cluster"
   }
@@ -322,9 +340,11 @@ resource "aws_instance" "fgt1" {
     type                 = "${var.license_type}"
     license_file         = "${var.license}"
     fgt_data_ip          = join("/", [element(tolist(aws_network_interface.eni-fgt1-data.private_ips), 0), cidrnetmask("${var.security_vpc_data_subnet_cidr1}")])
+    fgt_external_ip      = join("/", [element(tolist(aws_network_interface.eni-fgt1-data.private_ips), 0), cidrnetmask("${var.security_vpc_external_subnet_cidr1}")])
     fgt_heartbeat_ip     = join("/", [element(tolist(aws_network_interface.eni-fgt1-hb.private_ips), 0), cidrnetmask("${var.security_vpc_heartbeat_subnet_cidr1}")])
     fgt_mgmt_ip          = join("/", [element(tolist(aws_network_interface.eni-fgt1-mgmt.private_ips), 0), cidrnetmask("${var.security_vpc_mgmt_subnet_cidr1}")])
     data_gw              = cidrhost(var.security_vpc_data_subnet_cidr1, 1)
+    external_gw          = cidrhost(var.security_vpc_external_subnet_cidr1, 1)
     spoke1_cidr          = var.spoke_vpc1_cidr
     spoke2_cidr          = var.spoke_vpc2_cidr
     mgmt_cidr            = var.mgmt_cidr
@@ -340,10 +360,14 @@ resource "aws_instance" "fgt1" {
   }
   network_interface {
     device_index         = 1
-    network_interface_id = aws_network_interface.eni-fgt1-hb.id
+    network_interface_id = aws_network_interface.eni-fgt1-external.id
   }
   network_interface {
     device_index         = 2
+    network_interface_id = aws_network_interface.eni-fgt1-hb.id
+  }
+  network_interface {
+    device_index         = 3
     network_interface_id = aws_network_interface.eni-fgt1-mgmt.id
   }
   tags = {
@@ -362,9 +386,11 @@ resource "aws_instance" "fgt2" {
     type                 = "${var.license_type}"
     license_file         = "${var.license2}"
     fgt_data_ip          = join("/", [element(tolist(aws_network_interface.eni-fgt2-data.private_ips), 0), cidrnetmask("${var.security_vpc_data_subnet_cidr2}")])
+    fgt_external_ip      = join("/", [element(tolist(aws_network_interface.eni-fgt1-data.private_ips), 0), cidrnetmask("${var.security_vpc_external_subnet_cidr2}")])
     fgt_heartbeat_ip     = join("/", [element(tolist(aws_network_interface.eni-fgt2-hb.private_ips), 0), cidrnetmask("${var.security_vpc_heartbeat_subnet_cidr2}")])
     fgt_mgmt_ip          = join("/", [element(tolist(aws_network_interface.eni-fgt2-mgmt.private_ips), 0), cidrnetmask("${var.security_vpc_mgmt_subnet_cidr2}")])
     data_gw              = cidrhost(var.security_vpc_data_subnet_cidr2, 1)
+    external_gw          = cidrhost(var.security_vpc_external_subnet_cidr2, 1)
     spoke1_cidr          = var.spoke_vpc1_cidr
     spoke2_cidr          = var.spoke_vpc2_cidr
     mgmt_cidr            = var.mgmt_cidr
@@ -381,10 +407,14 @@ resource "aws_instance" "fgt2" {
   }
   network_interface {
     device_index         = 1
-    network_interface_id = aws_network_interface.eni-fgt2-hb.id
+    network_interface_id = aws_network_interface.eni-fgt2-external.id
   }
   network_interface {
     device_index         = 2
+    network_interface_id = aws_network_interface.eni-fgt2-hb.id
+  }
+  network_interface {
+    device_index         = 3
     network_interface_id = aws_network_interface.eni-fgt2-mgmt.id
   }
   tags = {

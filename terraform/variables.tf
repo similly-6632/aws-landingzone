@@ -410,6 +410,27 @@ variable "security_vpc_data_gw2" {
   default     = "10.0.10.1/24"
 }
 
+#### external subnets
+variable "security_vpc_external_subnet_cidr1" {
+  description = "Provide the network CIDR for the data subnet1 in security vpc"
+  default     = "10.0.2.0/24"
+}
+
+variable "security_vpc_external_gw1" {
+  description = "Provide the default local router IP for the subnet1"
+  default     = "10.0.2.1/24"
+}
+
+variable "security_vpc_external_subnet_cidr2" {
+  description = "Provide the network CIDR for the data subnet1 in security vpc"
+  default     = "10.0.20.0/24"
+}
+
+variable "security_vpc_external_gw2" {
+  description = "Provide the default local router IP for the subnet1"
+  default     = "10.0.20.1/24"
+}
+
 #### relay subnets
 variable "security_vpc_relay_subnet_cidr1" {
   description = "Provide the network CIDR for the relay subnet1 in security vpc"
@@ -509,7 +530,7 @@ variable "ami" {
 
 variable "keypair" {
   description = "Provide a keypair for accessing the FortiGate instances"
-  default     = "<AWS SSH KEY>"
+  default     = "SM2023-PEM"
 }
 
 variable "cidr_for_access" {

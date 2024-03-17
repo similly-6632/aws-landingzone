@@ -18,6 +18,14 @@ set mtu-override enable
 set mtu 9001
 next
 edit port2
+set alias EXTERNAL
+set mode static
+set ip ${fgt_external_ip}
+set allowaccess ping https ssh
+set mtu-override enable
+set mtu 9001
+next
+edit port3
 set alias HEARTBEAT
 set mode static
 set ip ${fgt_heartbeat_ip}
@@ -25,7 +33,7 @@ set allowaccess ping
 set mtu-override enable
 set mtu 9001
 next
-edit port3
+edit port4
 set alias MGMT
 set mode static
 set ip ${fgt_mgmt_ip}
@@ -38,6 +46,9 @@ config router static
 edit 1
 set device port1
 set gateway ${data_gw}
+end
+set device port2
+set gateway ${external_gw}
 end
 config firewall address
 edit toSpoke1
