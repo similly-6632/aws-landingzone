@@ -340,7 +340,7 @@ resource "aws_instance" "fgt1" {
     type                 = "${var.license_type}"
     license_file         = "${var.license}"
     fgt_data_ip          = join("/", [element(tolist(aws_network_interface.eni-fgt1-data.private_ips), 0), cidrnetmask("${var.security_vpc_data_subnet_cidr1}")])
-    fgt_external_ip      = join("/", [element(tolist(aws_network_interface.eni-fgt1-data.private_ips), 0), cidrnetmask("${var.security_vpc_external_subnet_cidr1}")])
+    fgt_external_ip      = join("/", [element(tolist(aws_network_interface.eni-fgt1-external.private_ips), 0), cidrnetmask("${var.security_vpc_external_subnet_cidr1}")])
     fgt_heartbeat_ip     = join("/", [element(tolist(aws_network_interface.eni-fgt1-hb.private_ips), 0), cidrnetmask("${var.security_vpc_heartbeat_subnet_cidr1}")])
     fgt_mgmt_ip          = join("/", [element(tolist(aws_network_interface.eni-fgt1-mgmt.private_ips), 0), cidrnetmask("${var.security_vpc_mgmt_subnet_cidr1}")])
     data_gw              = cidrhost(var.security_vpc_data_subnet_cidr1, 1)
@@ -386,7 +386,7 @@ resource "aws_instance" "fgt2" {
     type                 = "${var.license_type}"
     license_file         = "${var.license2}"
     fgt_data_ip          = join("/", [element(tolist(aws_network_interface.eni-fgt2-data.private_ips), 0), cidrnetmask("${var.security_vpc_data_subnet_cidr2}")])
-    fgt_external_ip      = join("/", [element(tolist(aws_network_interface.eni-fgt1-data.private_ips), 0), cidrnetmask("${var.security_vpc_external_subnet_cidr2}")])
+    fgt_external_ip      = join("/", [element(tolist(aws_network_interface.eni-fgt1-external.private_ips), 0), cidrnetmask("${var.security_vpc_external_subnet_cidr2}")])
     fgt_heartbeat_ip     = join("/", [element(tolist(aws_network_interface.eni-fgt2-hb.private_ips), 0), cidrnetmask("${var.security_vpc_heartbeat_subnet_cidr2}")])
     fgt_mgmt_ip          = join("/", [element(tolist(aws_network_interface.eni-fgt2-mgmt.private_ips), 0), cidrnetmask("${var.security_vpc_mgmt_subnet_cidr2}")])
     data_gw              = cidrhost(var.security_vpc_data_subnet_cidr2, 1)
