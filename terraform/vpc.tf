@@ -37,6 +37,24 @@ resource "aws_subnet" "data_subnet2" {
   }
 }
 
+resource "aws_subnet" "external_subnet1" {
+  vpc_id            = aws_vpc.vpc_sec.id
+  cidr_block        = var.security_vpc_external_subnet_cidr1
+  availability_zone = var.availability_zone1
+  tags = {
+    Name = "${var.tag_name_prefix}-${var.tag_name_unique}-external-subnet1"
+  }
+}
+
+resource "aws_subnet" "external_subnet2" {
+  vpc_id            = aws_vpc.vpc_sec.id
+  cidr_block        = var.security_vpc_external_subnet_cidr2
+  availability_zone = var.availability_zone2
+  tags = {
+    Name = "${var.tag_name_prefix}-${var.tag_name_unique}-external-subnet2"
+  }
+}
+
 resource "aws_subnet" "relay_subnet1" {
   vpc_id            = aws_vpc.vpc_sec.id
   cidr_block        = var.security_vpc_relay_subnet_cidr1
