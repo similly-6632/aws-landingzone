@@ -100,7 +100,7 @@ set session-pickup enable
 set ha-mgmt-status enable
 config ha-mgmt-interface
 edit 1
-set interface port3
+set interface port4
 set gateway ${mgmt_gw}
 next
 end
