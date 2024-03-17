@@ -161,6 +161,16 @@ resource "aws_route_table_association" "data_rt_association2" {
   route_table_id = aws_route_table.data_rt.id
 }
 
+resource "aws_route_table_association" "external_rt_association1" {
+  subnet_id      = aws_subnet.external_subnet1.id
+  route_table_id = aws_route_table.external_rt.id
+}
+
+resource "aws_route_table_association" "external_rt_association2" {
+  subnet_id      = aws_subnet.external_subnet2.id
+  route_table_id = aws_route_table.external_rt.id
+}
+
 resource "aws_route_table_association" "relay_rt_association1" {
   subnet_id      = aws_subnet.relay_subnet1.id
   route_table_id = aws_route_table.relay_rt.id
