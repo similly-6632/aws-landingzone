@@ -227,7 +227,7 @@ resource "aws_iam_policy_attachment" "APICall-attach" {
 
 # Create all the eni interfaces
 resource "aws_network_interface" "eni-fgt1-external" {
-  subnet_id         = aws_subnet.external_subnet1
+  subnet_id         = aws_subnet.external_subnet1.id
   security_groups   = [aws_security_group.NSG-vpc-sec-ssh-icmp-https.id]
   source_dest_check = false
   tags = {
@@ -236,7 +236,7 @@ resource "aws_network_interface" "eni-fgt1-external" {
 }
 
 resource "aws_network_interface" "eni-fgt2-external" {
-  subnet_id         = aws_subnet.external_subnet2
+  subnet_id         = aws_subnet.external_subnet2.id
   security_groups   = [aws_security_group.NSG-vpc-sec-ssh-icmp-https.id]
   source_dest_check = false
   tags = {
