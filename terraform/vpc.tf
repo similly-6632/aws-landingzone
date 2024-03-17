@@ -114,18 +114,21 @@ resource "aws_route_table" "data_rt" {
   vpc_id = aws_vpc.vpc_sec.id
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.igw_sec.id
-  }
-  route {
-    cidr_block         = var.spoke_vpc1_cidr
-    transit_gateway_id = aws_ec2_transit_gateway.TGW-XAZ.id
-  }
-  route {
-    cidr_block         = var.spoke_vpc2_cidr
     transit_gateway_id = aws_ec2_transit_gateway.TGW-XAZ.id
   }
   tags = {
     Name = "${var.tag_name_prefix}-${var.tag_name_unique}-data-and-mgmt-rt"
+  }
+}
+
+resource "aws_route_table" "external_rt" {
+  vpc_id = aws_vpc.vpc_sec.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw_sec.id
+  }
+  tags = {
+    Name = "${var.tag_name_prefix}-${var.tag_name_unique}-external-rt"
   }
 }
 
