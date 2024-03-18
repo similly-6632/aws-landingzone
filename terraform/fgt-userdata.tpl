@@ -44,9 +44,12 @@ next
 end
 config router static
 edit 1
+set destination 10.0.0.0/8
 set device port1
 set gateway ${data_gw}
 end
+edit 2
+set destination 0.0.0.0/0
 set device port2
 set gateway ${external_gw}
 end
