@@ -9,10 +9,10 @@ output "FGT_Cluster_Public_IP" {
   description = "Public IP address for the Cluster"
 }
 
-output "FGT_Passive_MGMT_Public_IP" {
+/* output "FGT_Passive_MGMT_Public_IP" {
   value       = aws_eip.eip-mgmt2.public_ip
   description = "Public IP address for the Passive FortiGate's MGMT interface"
-}
+} */
 
 output "FGT_Username" {
   value       = "admin"
