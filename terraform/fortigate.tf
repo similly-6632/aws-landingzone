@@ -310,14 +310,14 @@ resource "aws_eip" "eip-mgmt1" {
   }
 }
 
-/* resource "aws_eip" "eip-mgmt2" {
+resource "aws_eip" "eip-mgmt2" {
   depends_on        = [aws_instance.fgt2]
   domain            = "vpc"
   network_interface = aws_network_interface.eni-fgt2-mgmt.id
   tags = {
     Name = "${var.tag_name_prefix}-fgt2-eip-mgmt"
   }
-} */
+}
 
 resource "aws_eip" "eip-shared" {
   depends_on        = [aws_instance.fgt1]
@@ -375,7 +375,7 @@ resource "aws_instance" "fgt1" {
   }
 }
 
-/* resource "aws_instance" "fgt2" {
+resource "aws_instance" "fgt2" {
   //it will use region, architect, and license type to decide which ami to use for deployment
   ami               = var.fgtami[var.region][var.arch][var.license_type]
   instance_type     = var.instance_type
@@ -420,4 +420,4 @@ resource "aws_instance" "fgt1" {
   tags = {
     Name = "${var.tag_name_prefix}-${var.tag_name_unique}-fgt2"
   }
-} */
+}
