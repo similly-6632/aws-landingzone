@@ -44,14 +44,15 @@ next
 end
 config router static
 edit 1
-set destination 10.0.0.0/8
 set device port1
+set destination 10.0.0.0/8
 set gateway ${data_gw}
-end
+next
 edit 2
-set destination 0.0.0.0/0
 set device port2
+set destination 0.0.0.0/0
 set gateway ${external_gw}
+next
 end
 config firewall address
 edit toSpoke1
@@ -98,7 +99,7 @@ set group-name fortinet
 set group-id 1
 set password ${password}
 set mode a-p
-set hbdev port2 50
+set hbdev port3 50
 set session-pickup enable
 set ha-mgmt-status enable
 config ha-mgmt-interface

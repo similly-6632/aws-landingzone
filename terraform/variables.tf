@@ -537,3 +537,8 @@ variable "cidr_for_access" {
   description = "Provide a network CIDR for accessing the FortiGate instances"
   default     = "0.0.0.0/0"
 }
+
+# CWAN Global
+resource "aws_networkmanager_global_network" "example" {
+  description = "example"
+}
