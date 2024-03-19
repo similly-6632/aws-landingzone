@@ -183,12 +183,12 @@ resource "aws_route_table_association" "relay_rt_association2" {
 
 resource "aws_route_table_association" "mgmt_rt_association1" {
   subnet_id      = aws_subnet.mgmt_subnet1.id
-  route_table_id = aws_route_table.data_rt.id
+  route_table_id = aws_route_table.external_rt.id
 }
 
 resource "aws_route_table_association" "mgmt_rt_association2" {
   subnet_id      = aws_subnet.mgmt_subnet2.id
-  route_table_id = aws_route_table.data_rt.id
+  route_table_id = aws_route_table.external_rt.id
 }
 
 # Attachment to TGW
